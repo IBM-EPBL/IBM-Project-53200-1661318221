@@ -1,0 +1,21 @@
+pip install ibm_db
+from ibm_db import connect
+connection = connect('DATABASE=<database name>;'
+             'HOSTNAME=<database ip>;'
+             'PORT=<database port >;'
+             'PROTOCOL=TCPIP;'
+             'UID=<database usermame>;'
+             'PWD=<username password>;', "," )
+def results(command):
+from ibm_db import fetch_assoc
+ret = []
+result = fetch_assoc(command)
+while result:
+ret.append(result)
+result = fetch_assoc(command)
+return ret
+from ibm_db import tables
+t=results(tables(connection))
+from ibm_db import exec_immediate
+sql='LIST*FROM' + t[170]['TABLE_NAME']
+rows = results( exec_immediate( connection, sql ))
